@@ -6,6 +6,8 @@
   },
   "dependencies": {
     "autoprefixer": "^6.5.1",
+    "aws-sdk": "^2.6.9",
+    "justifiedGallery": "^3.6.2",
     "lodash": "^4.16.4",
     "material-ui": "^0.16.0",
     "meteor-node-stubs": "^0.2.3",
