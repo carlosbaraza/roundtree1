@@ -5,6 +5,16 @@
     "start": "meteor run"
   },
   "dependencies": {
-    "meteor-node-stubs": "~0.2.0"
+    "autoprefixer": "^6.5.1",
+    "lodash": "^4.16.4",
+    "material-ui": "^0.16.0",
+    "meteor-node-stubs": "^0.2.3",
+    "normalize.css": "^5.0.0",
+    "react": "^15.3.2",
+    "react-addons-css-transition-group": "^15.3.2",
+    "react-addons-pure-render-mixin": "^15.3.2",
+    "react-dom": "^15.3.2",
+    "react-router": "^2.8.1",
+    "react-tap-event-plugin": "^1.0.0"
   }
 }
