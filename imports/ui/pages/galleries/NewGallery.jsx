@@ -4,9 +4,15 @@ import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 import CloudUpload from 'material-ui/svg-icons/file/cloud-upload';
 import _ from 'lodash';
+import Paper from 'material-ui/Paper';
 
 const styles = {
   button: {
+  },
+  paper: {
+    padding: 20,
+    paddingTop: 0,
+    display: 'block',
   },
   imageInput: {
     cursor: 'pointer',
@@ -27,51 +33,59 @@ export default class NewGallery extends Component {
 
     return (
       <div className="new-gallery-container">
-        {(() => {
-          if (loading) {
-            return (
-              <CircularProgress
-                size={2}
-                style={{
-                  marginLeft: 'auto',
-                  marginRight: 'auto',
-                  display: 'block',
-                }}
-              />
-            );
-          } else {
-            return (
-              <div className="new-gallery">
-                <div>
-                  <TextField
-                    floatingLabelText="Your gallery name"
-                    fullWidth={true}
-                    onChange={event => {
-                      this.props.toggleAppBar(true);
-                      this.props.setAppBarTitle(event.nativeEvent.target.value);
-                    }}
-                  />
-                </div>
+        <div className="new-gallery-bg">
+          <img src="/img/bg-200KB.jpg" />
+        </div>
 
-                <RaisedButton
-                  label="images"
-                  labelPosition="before"
-                  primary={true}
-                  icon={<CloudUpload />}
-                  style={styles.button}
-                  fullWidth={true}
-                >
-                  <input
-                    className="file-chooser"
-                    type="file"
-                    style={styles.imageInput}
-                    multiple={true}
-                  />
-                </RaisedButton>
-              </div>
-            );
-          }
-        })()}
+        <div className="new-gallery-container-inner">
+          {(() => {
+            if (loading) {
+              return (
+                <CircularProgress
+                  size={2}
+                  style={{
+                    marginLeft: 'auto',
+                    marginRight: 'auto',
+                    display: 'block',
+                  }}
+                />
+              );
+            } else {
+              return (
+                <div className="new-gallery-outer">
+                  <Paper style={styles.paper} zDepth={3} className="new-gallery-inner">
+                    <div>
+                      <TextField
+                        floatingLabelText="Your gallery name"
+                        fullWidth={true}
+                        onChange={event => {
+                          this.props.toggleAppBar(true);
+                          this.props.setAppBarTitle(event.nativeEvent.target.value);
+                        }}
+                      />
+                    </div>
+
+                    <RaisedButton
+                      label="images"
+                      labelPosition="before"
+                      primary={true}
+                      icon={<CloudUpload />}
+                      style={styles.button}
+                      fullWidth={true}
+                    >
+                      <input
+                        className="file-chooser"
+                        type="file"
+                        style={styles.imageInput}
+                        multiple={true}
+                      />
+                    </RaisedButton>
+                  </Paper>
+                </div>
+              );
+            }
+          })()}
+        </div>
       </div>
     );
   }
