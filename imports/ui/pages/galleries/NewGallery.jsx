@@ -13,6 +13,7 @@ const styles = {
     padding: 20,
     paddingTop: 0,
     display: 'block',
+    backgroundColor: 'rgba(255, 255, 255, .96)'
   },
   imageInput: {
     cursor: 'pointer',

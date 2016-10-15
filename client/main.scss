@@ -49,7 +49,16 @@ body {
       height: 100%;
       position: relative;
       margin: auto;
-      width: 60%;
+
+      width: 80%;
+
+      @media screen and (min-width: 768px) {
+        width: 60%;
+      }
+
+      @media screen and (min-width: 1024px) {
+        width: 40%;
+      }
 
       .new-gallery-outer {
         width: 100%;
