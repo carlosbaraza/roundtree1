@@ -1,0 +1,1 @@
+require('/imports/api/images/publications.js');

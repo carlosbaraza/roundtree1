@@ -32,3 +32,29 @@ body {
     }
   }
 }
+
+.show-gallery-container {
+  height: 100%;
+  position: relative;
+  margin: auto;
+  width: 60%;
+
+  .show-gallery {
+    text-align: center;
+    width: 100%;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+}
+
+.tile img {
+  -webkit-filter: grayscale(0);
+  filter: grayscale(0);
+  -webkit-transition: .3s ease-in-out;
+  transition: .3s ease-in-out;
+}
+.tile img:hover {
+  -webkit-filter: grayscale(100%);
+  filter: grayscale(100%);
+}

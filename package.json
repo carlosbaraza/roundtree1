@@ -16,6 +16,7 @@
     "react-addons-css-transition-group": "^15.3.2",
     "react-addons-pure-render-mixin": "^15.3.2",
     "react-dom": "^15.3.2",
+    "react-grid-gallery": "^0.2.5",
     "react-router": "^2.8.1",
     "react-tap-event-plugin": "^1.0.0"
   }
