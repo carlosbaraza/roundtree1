@@ -9,10 +9,15 @@ import UIAppBar from 'material-ui/AppBar';
 export default class AppBar extends Component {
   render() {
     const title = this.props.title;
+    const showAppBar = this.props.showAppBar;
+
     return (
       <UIAppBar
+        className="mu-app-bar"
         style={{
-          backgroundColor: grey900
+          backgroundColor: grey900,
+          top: showAppBar ? 0 : -150,
+          position: 'absolute'
         }}
         title={
           <div>
@@ -27,4 +32,5 @@ export default class AppBar extends Component {
 
 AppBar.propTypes = {
   title: PropTypes.string,
+  showAppBar: PropTypes.bool,
 };

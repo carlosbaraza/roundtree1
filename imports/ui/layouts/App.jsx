@@ -10,6 +10,26 @@ import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 
 // App component - represents the whole app
 export default class App extends Component {
+  constructor() {
+    super();
+    this.state = {
+      showAppBar: false,
+      appBarTitle: 'Round Tree #1'
+    }
+  }
+
+  toggleAppBar(showAppBar) {
+    this.setState({
+      showAppBar: showAppBar === undefined ? !this.state.showAppBar : showAppBar
+    });
+  }
+
+  setAppBarTitle(appBarTitle) {
+    this.setState({
+      appBarTitle
+    });
+  }
+
   render() {
     const {
       // user,
@@ -20,14 +40,21 @@ export default class App extends Component {
 
     // clone route components with keys so that they can
     // have transitions
-    const clonedChildren = children && React.cloneElement(children, {
-      key: location.pathname,
-    });
+    const clonedChildren = children && React.Children.map(children,
+      child => React.cloneElement(child, {
+        key: location.pathname,
+        toggleAppBar: this.toggleAppBar.bind(this),
+        setAppBarTitle: this.setAppBarTitle.bind(this)
+      })
+    );
 
     return (
       <MuiThemeProvider muiTheme={getMuiTheme(RoundTreeTheme)}>
         <div className="container">
-          <AppBar title="Round Tree #1" />
+          <AppBar
+            title={this.state.appBarTitle}
+            showAppBar={this.state.showAppBar}
+          />
 
           <div className="content">
             <ReactCSSTransitionGroup

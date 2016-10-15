@@ -1,12 +1,34 @@
+html, body, .container, #render-target {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  top: 0;
+}
+
 body {
   font-family: 'Roboto', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: antialiased;
 }
 
+.mu-app-bar {
+  transition: all 0.3s;
+}
+
 .content {
-  .new-gallery {
+  height: 100%;
+
+  .new-gallery-container {
+    height: 100%;
+    position: relative;
     margin: auto;
     width: 60%;
+
+    .new-gallery {
+      width: 100%;
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+    }
   }
 }

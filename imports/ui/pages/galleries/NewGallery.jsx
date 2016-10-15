@@ -26,7 +26,7 @@ export default class NewGallery extends Component {
     const { loading } = this.props;
 
     return (
-      <div className="new-gallery">
+      <div className="new-gallery-container">
         {(() => {
           if (loading) {
             return (
@@ -41,11 +41,15 @@ export default class NewGallery extends Component {
             );
           } else {
             return (
-              <div>
+              <div className="new-gallery">
                 <div>
                   <TextField
                     floatingLabelText="Your gallery name"
                     fullWidth={true}
+                    onChange={event => {
+                      this.props.toggleAppBar(true);
+                      this.props.setAppBarTitle(event.nativeEvent.target.value);
+                    }}
                   />
                 </div>
 
