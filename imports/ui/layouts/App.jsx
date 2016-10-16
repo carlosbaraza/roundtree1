@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 
 import AppBar from '../components/AppBar.jsx';
+import AppFooter from '../components/AppFooter.jsx';
 
 import RoundTreeTheme from '../material-ui-themes/RoundTreeTheme.jsx';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
@@ -65,6 +66,7 @@ export default class App extends Component {
               {clonedChildren}
             </ReactCSSTransitionGroup>
           </div>
+          <AppFooter />
         </div>
       </MuiThemeProvider>
     );
