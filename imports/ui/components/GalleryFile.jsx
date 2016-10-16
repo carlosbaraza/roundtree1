@@ -31,63 +31,57 @@ export default class GalleryFile extends Component {
     var acceptFileType = /.*/i;
     var maxFileSize = 5000000;
 
-    console.log($(file));
-    try {
-      const $file = $(file);
+    const $file = $(file);
 
-      // Configure fileuploader
-      $file
-        .fileupload({
-          acceptFileTypes: acceptFileType,
-          maxFileSize: maxFileSize,
-          url: 'https://' + bucket + '.s3.amazonaws.com',
-          paramName: 'file',
-          dataType: 'xml',
-          add: (e, data) => {
-            const filename = data.files[0].name;
-            const params = [];
+    // Configure fileuploader
+    $file.fileupload({
+      acceptFileTypes: acceptFileType,
+      maxFileSize: maxFileSize,
+      url: 'https://' + bucket + '.s3.amazonaws.com',
+      paramName: 'file',
+      dataType: 'xml',
+      add: (e, data) => {
+        const filename = data.files[0].name;
+        const params = [];
 
-            Meteor.call('s3Credentials', filename, (err, s3Data) => {
-              if (err) {
-                console.error('Error generating policy', err);
-              }
-              data.formData = s3Data.params;
-              data.formData['Content-Type'] = file.type;
-              data.submit();
-            });
-
-            return params;
-          },
-          fail: (e, data) => {
-            console.error('Error uploading file', e, data);
-
-            let error;
-            if (/exceeds the maximum allowed size/.test(data.jqXHR.responseText)) {
-              error = 'File size exceeded (5 MB)'
-            }
-
-            this.setState({
-              uploadProgress: -1,
-              error
-            });
-          },
-          progress: (e, data) => {
-            const uploadProgress = parseInt(data.loaded / data.total * 100, 10);
-            this.setState({uploadProgress});
-          },
-          done: (e, data) => {
-            var s3Url = $(data.jqXHR.responseXML).find('Location').text();
-            var s3Key = $(data.jqXHR.responseXML).find('Key').text();
-            this.setState({uploadProgress: 100})
+        Meteor.call('s3Credentials', filename, (err, s3Data) => {
+          if (err) {
+            console.error('Error generating policy', err);
           }
+          data.formData = s3Data.params;
+          data.formData['Content-Type'] = file.type;
+          data.submit();
         });
 
-      // POST the file
-      $file.fileupload('add', {files: [file]});
-    } catch(e) {
-      console.log(e);
-    }
+        return params;
+      },
+      fail: (e, data) => {
+        console.error('Error uploading file', e, data);
 
+        let error;
+        if (/exceeds the maximum allowed size/.test(data.jqXHR.responseText)) {
+          error = 'File size exceeded (5 MB)'
+        }
+
+        this.setState({
+          uploadProgress: -1,
+          error
+        });
+      },
+      progress: (e, data) => {
+        const uploadProgress = parseInt(data.loaded / data.total * 100, 10);
+        this.setState({uploadProgress});
+      },
+      done: (e, data) => {
+        var s3Url = $(data.jqXHR.responseXML).find('Location').text();
+        var s3Key = $(data.jqXHR.responseXML).find('Key').text();
+
+        this.setState({uploadProgress: 100})
+      }
+    });
+
+    // POST the file
+    $file.fileupload('add', {files: [file]});
   }
 
   componentDidMount() {
