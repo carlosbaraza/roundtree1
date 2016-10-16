@@ -153,6 +153,20 @@ class NewGallery extends Component {
                       />
                     </RaisedButton>
 
+                    {(() => {
+                      if (this.props.gallery) {
+                        return (
+                          <TextField
+                            floatingLabelText="Gallery link"
+                            fullWidth={true}
+                            value={`http://localhost:3000/gallery/${this.props.gallery._id}`}
+                            onChange={event => {
+                            }}
+                          />
+                        );
+                      }
+                    })()}
+
                     {this.renderFiles()}
                   </Paper>
                 </div>
