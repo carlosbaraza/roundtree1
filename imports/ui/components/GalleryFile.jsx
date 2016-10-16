@@ -104,7 +104,7 @@ export default class GalleryFile extends Component {
           tooltip="Remove from gallery"
           style={{
             position: 'absolute',
-            top: 15,
+            top: this.state.uploadProgress < 100 ? 4 : 15,
             right: 0,
           }}
         >
