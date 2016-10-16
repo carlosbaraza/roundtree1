@@ -13,6 +13,8 @@ import { render } from 'react-dom';
 
 import { renderRoutes } from '../imports/startup/client/routes.jsx';
 
+import toastr from '/imports/startup/client/toastr.js';
+
 Meteor.startup(() => {
   render(
     renderRoutes(),

@@ -7,6 +7,7 @@ import _ from 'lodash';
 import Paper from 'material-ui/Paper';
 import { List, ListItem } from 'material-ui/List';
 import Subheader from 'material-ui/Subheader';
+import toastr from 'toastr';
 
 import GalleryFile from '/imports/ui/components/GalleryFile.jsx';
 
@@ -47,7 +48,7 @@ export default class NewGallery extends Component {
     Array.prototype.map.call(files, file => {
       // Only process image files.
       if (!file.type.match('image.*')) {
-        console.error('The file is not an image');
+        toastr.error(`Some files are not images`);
         return null;
       }
 
@@ -60,7 +61,7 @@ export default class NewGallery extends Component {
 
   addFile(file) {
     if (this.state.files.filter(f => f.name === file.name).length) {
-      console.error('File already uploaded');
+      toastr.error(`Some files were already uploaded`);
       return null;
     }
     let files = this.state.files;
