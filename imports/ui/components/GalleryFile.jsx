@@ -29,7 +29,7 @@ export default class GalleryFile extends Component {
     // client-side validation by fileUpload should match the policy
     // restrictions so that the checks fail early
     var acceptFileType = /.*/i;
-    var maxFileSize = 1000000;
+    var maxFileSize = 5000000;
 
     console.log($(file));
     try {
@@ -60,7 +60,16 @@ export default class GalleryFile extends Component {
           },
           fail: (e, data) => {
             console.error('Error uploading file', e, data);
-            this.setState({uploadProgress: -1});
+
+            let error;
+            if (/exceeds the maximum allowed size/.test(data.jqXHR.responseText)) {
+              error = 'File size exceeded (5 MB)'
+            }
+
+            this.setState({
+              uploadProgress: -1,
+              error
+            });
           },
           progress: (e, data) => {
             const uploadProgress = parseInt(data.loaded / data.total * 100, 10);
@@ -106,7 +115,11 @@ export default class GalleryFile extends Component {
         primaryText={file.name}
         secondaryText={(() => {
           if (this.state.uploadProgress === -1) {
-            return <span style={{color: '#FF0000'}}>Error</span>
+            return (
+              <span style={{color: '#FF0000'}}>
+                {this.state.error || 'Error'}
+              </span>
+            );
           } else if (this.isUploading()) {
             return <LinearProgress
               mode="determinate"
