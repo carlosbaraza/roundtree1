@@ -5,10 +5,10 @@ import ShowGallery from '/imports/ui/pages/ShowGallery.jsx';
 import { Images } from '/imports/api/images/images.js';
 
 export default createContainer(props => {
-    const imagesHandler = Meteor.subscribe('images');
+    const galleryHandler = Meteor.subscribe('gallery', props.params.galleryId);
 
     return {
-        imagesReady: imagesHandler.ready(),
-        images: Images.find({gallery: props.params.galleryId}).fetch()
+        imagesReady: galleryHandler.ready(),
+        images: Images.find().fetch()
     };
 }, ShowGallery);

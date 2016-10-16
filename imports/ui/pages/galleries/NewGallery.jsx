@@ -8,8 +8,10 @@ import Paper from 'material-ui/Paper';
 import { List, ListItem } from 'material-ui/List';
 import Subheader from 'material-ui/Subheader';
 import toastr from 'toastr';
+import { withRouter } from 'react-router';
 
 import GalleryFile from '/imports/ui/components/GalleryFile.jsx';
+import { Galleries } from '/imports/api/galleries/galleries.js';
 
 const styles = {
   button: {
@@ -33,7 +35,7 @@ const styles = {
   },
 };
 
-export default class NewGallery extends Component {
+class NewGallery extends Component {
   constructor() {
     super();
     this.state = {
@@ -50,6 +52,12 @@ export default class NewGallery extends Component {
       if (!file.type.match('image.*')) {
         toastr.error(`Some files are not images`);
         return null;
+      }
+
+      if (!this.props.gallery) {
+        const galleryId = Galleries.insert({
+        });
+        this.props.router.push(`/?galleryId=${galleryId}`)
       }
 
       this.addFile(file);
@@ -82,6 +90,7 @@ export default class NewGallery extends Component {
               <GalleryFile
                 key={file.name}
                 file={file}
+                gallery={this.props.gallery}
               />
             );
           });
@@ -157,4 +166,7 @@ export default class NewGallery extends Component {
 }
 
 NewGallery.propTypes = {
+  gallery: PropTypes.object
 };
+
+export default withRouter(NewGallery);

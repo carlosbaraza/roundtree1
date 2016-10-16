@@ -10,6 +10,6 @@ Meteor.methods({
       secretKey: process.env.S3_SECRET_KEY
     };
 
-    return s3Credentials(config, filename);;
+    return s3Credentials(config, filename);
   }
 });

@@ -37,6 +37,7 @@ export default class App extends Component {
       connected,
       children,
       location,
+      gallery,
     } = this.props;
 
     // clone route components with keys so that they can
@@ -45,7 +46,8 @@ export default class App extends Component {
       child => React.cloneElement(child, {
         key: location.pathname,
         toggleAppBar: this.toggleAppBar.bind(this),
-        setAppBarTitle: this.setAppBarTitle.bind(this)
+        setAppBarTitle: this.setAppBarTitle.bind(this),
+        gallery
       })
     );
 

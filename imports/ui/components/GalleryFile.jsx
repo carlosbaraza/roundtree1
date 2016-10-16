@@ -4,6 +4,7 @@ import { List, ListItem } from 'material-ui/List';
 import ActionDelete from 'material-ui/svg-icons/action/delete';
 import IconButton from 'material-ui/IconButton';
 import LinearProgress from 'material-ui/LinearProgress';
+import { Images } from '/imports/api/images/images.js';
 
 import $ from 'jquery';
 require('blueimp-file-upload');
@@ -18,12 +19,22 @@ export default class GalleryFile extends Component {
       ETag: props.ETag
     }
 
-    if (!props.ETag) {
-      this.uploadToAWS(props.file);
+    if (!props.s3key) {
+      const insertOptions = {
+        filename: props.file.name,
+        galleryId: props.gallery._id
+      };
+      Meteor.call('images/insert', insertOptions, (err, image) => {
+        if (err) {
+          return console.error('Error while inserting image', err);
+        }
+        this.setState({image});
+        this.uploadToAWS(props.file, image);
+      });
     }
   }
 
-  uploadToAWS(file) {
+  uploadToAWS(file, image) {
     // Configuration
     var bucket = 'roundtree-images';
     // client-side validation by fileUpload should match the policy
@@ -41,10 +52,9 @@ export default class GalleryFile extends Component {
       paramName: 'file',
       dataType: 'xml',
       add: (e, data) => {
-        const filename = data.files[0].name;
         const params = [];
 
-        Meteor.call('s3Credentials', filename, (err, s3Data) => {
+        Meteor.call('s3Credentials', image.s3key, (err, s3Data) => {
           if (err) {
             console.error('Error generating policy', err);
           }
@@ -73,8 +83,8 @@ export default class GalleryFile extends Component {
         this.setState({uploadProgress});
       },
       done: (e, data) => {
-        var s3Url = $(data.jqXHR.responseXML).find('Location').text();
-        var s3Key = $(data.jqXHR.responseXML).find('Key').text();
+        const s3Url = $(data.jqXHR.responseXML).find('Location').text();
+        const s3Key = $(data.jqXHR.responseXML).find('Key').text();
 
         this.setState({uploadProgress: 100})
       }
@@ -151,5 +161,6 @@ export default class GalleryFile extends Component {
 }
 
 GalleryFile.propTypes = {
-  file: PropTypes.object
+  file: PropTypes.object,
+  gallery: PropTypes.object
 }
