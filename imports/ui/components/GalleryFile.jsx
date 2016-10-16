@@ -116,7 +116,7 @@ export default class GalleryFile extends Component {
         secondaryText={(() => {
           if (this.state.uploadProgress === -1) {
             return (
-              <span style={{color: '#FF0000'}}>
+              <span style={{color: '#FF0000', display: 'inline-block'}}>
                 {this.state.error || 'Error'}
               </span>
             );
