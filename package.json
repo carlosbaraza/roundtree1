@@ -7,6 +7,9 @@
   "dependencies": {
     "autoprefixer": "^6.5.1",
     "aws-sdk": "^2.6.9",
+    "blueimp-file-upload": "^9.12.5",
+    "crypto": "0.0.3",
+    "jquery": "^3.1.1",
     "justifiedGallery": "^3.6.2",
     "lodash": "^4.16.4",
     "material-ui": "^0.16.0",

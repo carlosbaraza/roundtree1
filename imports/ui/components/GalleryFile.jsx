@@ -5,6 +5,9 @@ import ActionDelete from 'material-ui/svg-icons/action/delete';
 import IconButton from 'material-ui/IconButton';
 import LinearProgress from 'material-ui/LinearProgress';
 
+import $ from 'jquery';
+require('blueimp-file-upload');
+
 export default class GalleryFile extends Component {
   constructor(props) {
     super();
@@ -22,11 +25,10 @@ export default class GalleryFile extends Component {
 
   uploadToAWS(file) {
     // Configure The S3 Object
-    AWS.config.update({
-      accessKeyId: 'AKIAJZTXW2BF5OJTHOYQ',
-      secretAccessKey: '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'
-    });
     AWS.config.region = 'eu-west-1';
+    AWS.config.credentials = new AWS.CognitoIdentityCredentials({
+        IdentityPoolId: 'eu-west-1:836f3cc7-2e23-4258-b566-a76c859e1ca1'
+    });
     var bucket = new AWS.S3({
       params: {
         Bucket: 'roundtree-images'
@@ -44,6 +46,9 @@ export default class GalleryFile extends Component {
       .putObject(awsParams, (err, response) => {
         if (err) {
           console.error(err);
+          this.setState({
+            uploadProgress: -1
+          });
           return false;
         }
         // Success!
@@ -79,7 +84,9 @@ export default class GalleryFile extends Component {
       <ListItem
         primaryText={file.name}
         secondaryText={(() => {
-          if (this.state.uploadProgress < 100) {
+          if (this.state.uploadProgress === -1) {
+            return <span style={{color: '#FF0000'}}>Error</span>
+          } else if (this.state.uploadProgress < 100) {
             return <LinearProgress
               mode="determinate"
               value={this.state.uploadProgress}
