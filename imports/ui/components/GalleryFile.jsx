@@ -5,6 +5,7 @@ import ActionDelete from 'material-ui/svg-icons/action/delete';
 import IconButton from 'material-ui/IconButton';
 import LinearProgress from 'material-ui/LinearProgress';
 import { Images } from '/imports/api/images/images.js';
+import { resizeImg, dataURItoBlob } from '/imports/utils/client/image-processing.js';
 
 import $ from 'jquery';
 require('blueimp-file-upload');
@@ -14,24 +15,41 @@ export default class GalleryFile extends Component {
     super();
 
     this.state = {
-      imgUrl: null,
       uploadProgress: 0,
       ETag: props.ETag
     }
 
-    if (!props.s3key) {
-      const insertOptions = {
-        filename: props.file.name,
-        galleryId: props.gallery._id
-      };
-      Meteor.call('images/insert', insertOptions, (err, image) => {
-        if (err) {
-          return console.error('Error while inserting image', err);
+    const reader = new FileReader();
+
+    reader.onload = event => {
+      const imgUrl = event.target.result;
+      this.setState({imgUrl});
+
+      const imgEl = new Image();
+      imgEl.src = imgUrl;
+
+      imgEl.onload = () => {
+        const resizedFile = dataURItoBlob(resizeImg(imgEl));
+
+        // Upload to AWS
+        if (!props.s3key) {
+          const insertOptions = {
+            filename: props.file.name,
+            galleryId: props.gallery._id
+          };
+          Meteor.call('images/insert', insertOptions, (err, image) => {
+            if (err) {
+              return console.error('Error while inserting image', err);
+            }
+            this.setState({image});
+            this.uploadToAWS(resizedFile, image);
+          });
         }
-        this.setState({image});
-        this.uploadToAWS(props.file, image);
-      });
-    }
+      }
+    };
+
+    // Read in the image file as a data URL.
+    reader.readAsDataURL(props.file);
   }
 
   uploadToAWS(file, image) {
@@ -92,19 +110,6 @@ export default class GalleryFile extends Component {
 
     // POST the file
     $file.fileupload('add', {files: [file]});
-  }
-
-  componentDidMount() {
-    const reader = new FileReader();
-
-    reader.onload = event => {
-      this.setState({
-        imgUrl: event.target.result
-      });
-    };
-
-    // Read in the image file as a data URL.
-    reader.readAsDataURL(this.props.file);
   }
 
   isUploading() {
