@@ -29,19 +29,25 @@ export default class GalleryFile extends Component {
       imgEl.src = imgUrl;
 
       imgEl.onload = () => {
-        const resizedFile = dataURItoBlob(resizeImg(imgEl));
+        const resizedUrl = resizeImg(imgEl);
+        const resizedImgEl = new Image();
+        resizedImgEl.src = resizedUrl;
 
         // Upload to AWS
         if (!props.s3key) {
           const insertOptions = {
             filename: props.file.name,
-            galleryId: props.gallery._id
+            galleryId: props.gallery._id,
+            width: resizedImgEl.width,
+            height: resizedImgEl.height
           };
           Meteor.call('images/insert', insertOptions, (err, image) => {
             if (err) {
               return console.error('Error while inserting image', err);
             }
             this.setState({image});
+
+            const resizedFile = dataURItoBlob(resizedUrl);
             this.uploadToAWS(resizedFile, image);
           });
         }

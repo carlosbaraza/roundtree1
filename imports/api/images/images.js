@@ -32,6 +32,12 @@ const schema = new SimpleSchema({
       }
     }
   },
+  width: {
+    type: Number
+  },
+  height: {
+    type: Number
+  },
   thumbnail: {
     type: String,
     label: "Thumbnail image URL",
