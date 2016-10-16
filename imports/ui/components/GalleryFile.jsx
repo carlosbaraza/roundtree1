@@ -33,14 +33,21 @@ export default class GalleryFile extends Component {
         const resizedImgEl = new Image();
         resizedImgEl.src = resizedUrl;
 
+        const thumbnailUrl = resizeImg(imgEl, 640, 360);
+        const thumbnailImgEl = new Image();
+        thumbnailImgEl.src = thumbnailUrl;
+
         // Upload to AWS
         if (!props.s3key) {
           const insertOptions = {
             filename: props.file.name,
             galleryId: props.gallery._id,
             width: resizedImgEl.width,
-            height: resizedImgEl.height
+            height: resizedImgEl.height,
+            thumbnailWidth: thumbnailImgEl.width,
+            thumbnailHeight: thumbnailImgEl.height
           };
+
           Meteor.call('images/insert', insertOptions, (err, image) => {
             if (err) {
               return console.error('Error while inserting image', err);
