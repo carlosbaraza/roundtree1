@@ -1,0 +1,15 @@
+#toast-container {
+
+  &>.toast {
+    opacity: 0.95;
+    color: white;
+    
+    &, &:hover {
+      box-shadow: none;
+    }
+  }
+
+  .toast-error {
+    background-color: rgba(245, 38, 38, 0.95);
+  }
+}
