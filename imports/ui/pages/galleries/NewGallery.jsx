@@ -159,7 +159,7 @@ class NewGallery extends Component {
                           <TextField
                             floatingLabelText="Gallery link"
                             fullWidth={true}
-                            value={`http://localhost:3000/gallery/${this.props.gallery._id}`}
+                            value={`https://gallery.carlosbaraza.com/gallery/${this.props.gallery._id}`}
                             onChange={event => {
                             }}
                           />
